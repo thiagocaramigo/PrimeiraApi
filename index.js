@@ -4,6 +4,9 @@
 const express = require("express");
 
 
+const cors = require('cors');
+
+
 // Vamos importar o modulo mongoose que ferá a interface entre o
 // nodejs e o banco de dados mongodb
 const mongoose = require("mongoose");
@@ -58,7 +61,7 @@ const Cliente = mongoose.model("tbcliente",tabela);
 
 // criar uma refêrencia do servidor express para utilizá-lo
 const app = express();
-
+app.use(cors());
 // fazer o servidor express receber e tratar dados em formato json
 app.use(express.json());
 
@@ -114,7 +117,7 @@ app.post("/api/cliente/cadastro",(req,res)=>{
         const gerado = criaToken(req.body.usuario,req.body.nome);
         res.status(201).send({output:`Cliente cadastrado`,token:gerado});
     })
-    .catch((erro)=>res.status(400).send({output:`Erro ao tentar cadastradar o cliente -> ${erro}`}))
+    .catch((erro)=>res.status(400).send({output:`Erro ao tentar cadastradar o cliente`,message:erro}))
 
 });
 
